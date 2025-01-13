@@ -1,6 +1,6 @@
 <template>
   <div class="menu-container">
-    <form class="menu-box" @submit.prevent="">
+    <form class="menu-box" @submit.prevent="onSubmit">
       <div class="menu-date">
         <div class="menu-date-text">날짜</div>
         <div class="menu-date-datepicker">
@@ -15,13 +15,20 @@
       </div>
       <div class="menu-specimen">
         <div class="menu-specimen-text">표본 수</div>
-        <input class="menu-specimen-input" type="number" placeholder="숫자" />
+        <input
+          class="menu-specimen-input"
+          type="number"
+          placeholder="숫자"
+          v-model="inputNumber"
+        />
       </div>
       <button class="menu-check-button" type="submit">조회</button>
     </form>
   </div>
 </template>
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   data() {
     const now = new Date();
@@ -30,7 +37,15 @@ export default {
     return {
       inputDate: today,
       max: maxDate,
+      inputNumber: "",
     };
+  },
+  methods: {
+    ...mapMutations(["SET_NUMBER"]),
+    onSubmit() {
+      const temp = this.inputNumber;
+      this.SET_NUMBER(temp);
+    },
   },
 };
 </script>
