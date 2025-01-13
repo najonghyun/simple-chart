@@ -1,0 +1,10 @@
+:root {
+  --bs-primary: #778899;
+}
+
+.b-form-datepicker {
+  height: 38px;
+  border-radius: 10px;
+  border: gray 1px solid;
+  font-size: 1rem;
+}

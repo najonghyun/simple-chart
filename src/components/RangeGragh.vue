@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div><div class="range-container"></div></div>
 </template>
 <script>
 export default {};
