@@ -10,6 +10,7 @@
             selected-variant="primary"
             :max="max"
             locale="ko"
+            @input="onChangeDate"
           ></b-form-datepicker>
         </div>
       </div>
@@ -31,20 +32,30 @@ import { mapMutations } from "vuex";
 
 export default {
   data() {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const maxDate = new Date(today);
     return {
-      inputDate: today,
-      max: maxDate,
+      inputDate: "",
+      max: "",
       inputNumber: "",
     };
   },
+  created() {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const maxDate = new Date(today);
+    this.SET_DATE(today);
+    this.inputDate = today;
+    this.max = maxDate;
+  },
   methods: {
-    ...mapMutations(["SET_NUMBER"]),
+    ...mapMutations(["SET_NUMBER", "SET_DATE", "SET_DATES"]),
     onSubmit() {
       const temp = this.inputNumber;
       this.SET_NUMBER(temp);
+      this.SET_DATES(temp);
+    },
+    onChangeDate() {
+      this.SET_DATE(this.inputDate);
+      console.log(this.inputDate);
     },
   },
 };

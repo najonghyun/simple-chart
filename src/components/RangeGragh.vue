@@ -20,11 +20,27 @@
       <div class="range-items-grid">
         <div
           class="range-items-grid-content"
-          v-for="(range, index) in timeRanges"
-          :key="index"
+          v-for="range in filteredDates"
+          :key="range.id"
           :style="computeStyle(range.start, range.end)"
         >
-          {{ range.start }}시 ~ {{ range.end }}시
+          <div
+            v-if="!range.moreStart"
+            class="range-items-grid-circle grid-circle-left"
+          >
+            {{ range.id }}
+          </div>
+          <div
+            class="range-items-grid-line"
+            :style="{
+              marginLeft: range.moreStart ? '0px' : '7.5px',
+              marginRight: range.moreEnd ? '0px' : '7.5px',
+            }"
+          ></div>
+          <div
+            v-if="!range.moreEnd"
+            class="range-items-grid-circle grid-circle-right"
+          ></div>
         </div>
       </div>
     </div>
@@ -36,15 +52,44 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      timeRanges: [
-        { start: 4, end: 13 }, // 첫 번째 범위: 4시 ~ 13시
-        { start: 2, end: 8 }, // 두 번째 범위: 2시 ~ 8시
-        { start: 6, end: 15 }, // 세 번째 범위: 6시 ~ 15시
-      ],
+      // dates: new RandomDates(),
     };
   },
+  // created() {
+  //   this.dates.create(5);
+  // },
   computed: {
-    ...mapState({ number: "number" }),
+    ...mapState({ number: "number", date: "date", dates: "dates" }),
+    filteredDates() {
+      const targetDate = new Date(this.date);
+      const targetStart = new Date(targetDate);
+      targetStart.setHours(0, 0, 0, 0);
+
+      const targetEnd = new Date(targetDate);
+      targetEnd.setHours(23, 59, 59, 999);
+
+      return this.dates.items
+        .map((range) => {
+          const startDate = new Date(range.start);
+          const endDate = new Date(range.end);
+
+          // 선택된 날짜와 겹치는 범위를 확인
+          if (endDate < targetStart || startDate > targetEnd) {
+            return null;
+          }
+          const start = startDate < targetStart ? 0 : startDate.getHours();
+          const end = endDate > targetEnd ? 24 : endDate.getHours();
+
+          return {
+            id: range.id,
+            start: start,
+            end: end,
+            moreStart: startDate < targetStart,
+            moreEnd: endDate > targetEnd,
+          };
+        })
+        .filter((range) => range !== null); // null 값 제거
+    },
   },
   methods: {
     computeStyle(start, end) {
@@ -54,7 +99,7 @@ export default {
       return {
         left: `${startPercentage}%`, // 시작 위치
         width: `${endPercentage - startPercentage}%`, // 길이
-        backgroundColor: "rgba(0, 0, 255, 0.3)", // 그래프 색상
+        // backgroundColor: "rgba(0, 0, 255, 0.3)", // 그래프 색상
       };
     },
   },
@@ -64,6 +109,7 @@ export default {
 .range-container {
   position: relative;
   height: 400px;
+  margin-top: 25px;
 }
 .range-background-box {
   position: relative;
@@ -147,6 +193,28 @@ export default {
 .range-items-grid-content {
   position: relative;
   flex: 1;
-  margin: 30px 0;
+  align-content: center;
+}
+.range-items-grid-circle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  border: 2px solid black;
+  text-align: center;
+  font-size: 0.5rem;
+  font-weight: 700;
+}
+.grid-circle-left {
+  left: -7.5px;
+}
+.grid-circle-right {
+  right: -7.5px;
+}
+.range-items-grid-line {
+  height: 2px;
+  background-color: black;
 }
 </style>
