@@ -47,11 +47,12 @@ export default {
     this.max = maxDate;
   },
   methods: {
-    ...mapMutations(["SET_DATE"]),
+    ...mapMutations(["SET_DATE", "SET_ISCHECK"]),
     ...mapActions(["ADD_DATES", "UPDATE_DATE"]),
     onSubmit() {
       const temp = this.inputNumber;
       this.ADD_DATES(temp);
+      this.SET_ISCHECK(true);
     },
     onChangeDate() {
       this.UPDATE_DATE(this.inputDate);

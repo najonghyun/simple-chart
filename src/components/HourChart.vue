@@ -1,6 +1,5 @@
 <template>
   <div class="hour-chart-container">
-    {{ date }}
     <wj-flex-chart :itemsSource="data" bindingX="hour" selectionMode="Point">
       <wj-flex-chart-legend position="Top"> </wj-flex-chart-legend>
       <wj-flex-chart-series name="count" binding="count">

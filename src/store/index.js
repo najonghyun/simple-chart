@@ -10,6 +10,7 @@ const store = new Vuex.Store({
     date: '',
     dates: new RandomDates(),
     filteredDates: [],
+    isCheck: false,
   },
   mutations: {
     SET_NUMBER(state, newNumber) {
@@ -51,6 +52,9 @@ const store = new Vuex.Store({
           }
         })
         .filter((range) => range !== null) // null 값 제거
+    },
+    SET_ISCHECK(state, newIsCheck) {
+      state.isCheck = newIsCheck
     },
   },
   actions: {

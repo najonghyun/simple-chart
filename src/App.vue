@@ -3,7 +3,7 @@
     <div class="container">
       <TopMenu />
       <RangeGragh />
-      <HourChart />
+      <HourChart v-if="isCheck" />
     </div>
   </div>
 </template>
@@ -12,6 +12,7 @@
 import TopMenu from "./components/TopMenu.vue";
 import RangeGragh from "./components/RangeGragh.vue";
 import HourChart from "./components/HourChart.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "App",
@@ -19,6 +20,9 @@ export default {
     TopMenu,
     RangeGragh,
     HourChart,
+  },
+  computed: {
+    ...mapState({ isCheck: "isCheck" }),
   },
 };
 </script>
