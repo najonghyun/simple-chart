@@ -22,7 +22,7 @@
           class="range-items-grid-content"
           v-for="range in filteredDates"
           :key="range.id"
-          :style="computeStyle(range.start, range.end)"
+          :style="computeStyle(format(range.start), format(range.end))"
         >
           <div
             v-if="!range.moreStart"
@@ -47,7 +47,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 export default {
   data() {
@@ -59,39 +59,52 @@ export default {
   //   this.dates.create(5);
   // },
   computed: {
-    ...mapState({ number: "number", date: "date", dates: "dates" }),
-    filteredDates() {
-      const targetDate = new Date(this.date);
-      const targetStart = new Date(targetDate);
-      targetStart.setHours(0, 0, 0, 0);
+    ...mapState({ filteredDates: "filteredDates" }),
+    // ...mapState({ number: "number", date: "date", dates: "dates" }),
+    // filteredDates() {
+    //   const targetDate = new Date(this.date);
+    //   const targetStart = new Date(targetDate);
+    //   targetStart.setHours(0, 0, 0, 0);
 
-      const targetEnd = new Date(targetDate);
-      targetEnd.setHours(23, 59, 59, 999);
+    //   const targetEnd = new Date(targetDate);
+    //   targetEnd.setHours(23, 59, 59, 999);
 
-      return this.dates.items
-        .map((range) => {
-          const startDate = new Date(range.start);
-          const endDate = new Date(range.end);
+    //   return this.dates.items
+    //     .map((range) => {
+    //       const startDate = new Date(range.start);
+    //       const endDate = new Date(range.end);
 
-          // 선택된 날짜와 겹치는 범위를 확인
-          if (endDate < targetStart || startDate > targetEnd) {
-            return null;
-          }
-          const start = startDate < targetStart ? 0 : startDate.getHours();
-          const end = endDate > targetEnd ? 24 : endDate.getHours();
+    //       // 선택된 날짜와 겹치는 범위를 확인
+    //       if (endDate < targetStart || startDate > targetEnd) {
+    //         return null;
+    //       }
+    //       const start =
+    //         startDate < targetStart
+    //           ? 0
+    //           : startDate.getHours() + startDate.getMinutes() / 60;
+    //       const end =
+    //         endDate > targetEnd
+    //           ? 24
+    //           : endDate.getHours() + endDate.getMinutes() / 60;
 
-          return {
-            id: range.id,
-            start: start,
-            end: end,
-            moreStart: startDate < targetStart,
-            moreEnd: endDate > targetEnd,
-          };
-        })
-        .filter((range) => range !== null); // null 값 제거
-    },
+    //       return {
+    //         id: range.id,
+    //         start: start,
+    //         end: end,
+    //         moreStart: startDate < targetStart,
+    //         moreEnd: endDate > targetEnd,
+    //       };
+    //     })
+    //     .filter((range) => range !== null); // null 값 제거
+    // },
   },
   methods: {
+    ...mapMutations(["SET_FILTEREDDATES"]),
+    format(date) {
+      const temp =
+        date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 3600;
+      return temp;
+    },
     computeStyle(start, end) {
       const totalHours = 24; // 하루 24시간 기준
       const startPercentage = (start / totalHours) * 100;

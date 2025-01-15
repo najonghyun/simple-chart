@@ -3,6 +3,7 @@
     <div class="container">
       <TopMenu />
       <RangeGragh />
+      <HourChart />
     </div>
   </div>
 </template>
@@ -10,12 +11,14 @@
 <script>
 import TopMenu from "./components/TopMenu.vue";
 import RangeGragh from "./components/RangeGragh.vue";
+import HourChart from "./components/HourChart.vue";
 
 export default {
   name: "App",
   components: {
     TopMenu,
     RangeGragh,
+    HourChart,
   },
 };
 </script>

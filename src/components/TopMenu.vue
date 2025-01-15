@@ -28,7 +28,7 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -47,14 +47,14 @@ export default {
     this.max = maxDate;
   },
   methods: {
-    ...mapMutations(["SET_NUMBER", "SET_DATE", "SET_DATES"]),
+    ...mapMutations(["SET_DATE"]),
+    ...mapActions(["ADD_DATES", "UPDATE_DATE"]),
     onSubmit() {
       const temp = this.inputNumber;
-      this.SET_NUMBER(temp);
-      this.SET_DATES(temp);
+      this.ADD_DATES(temp);
     },
     onChangeDate() {
-      this.SET_DATE(this.inputDate);
+      this.UPDATE_DATE(this.inputDate);
       console.log(this.inputDate);
     },
   },
