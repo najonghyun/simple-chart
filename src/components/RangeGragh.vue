@@ -2,7 +2,9 @@
   <div class="range-container">
     <div class="range-background-box">
       <div class="range-background-quadrant-top">
-        <div class="range-background-quadrant-02"></div>
+        <div class="range-background-quadrant-02">
+          <div class="range-background-quadrant-02-text">표본</div>
+        </div>
         <div class="range-background-quadrant-01"></div>
       </div>
       <div class="range-background-quadrant-bottom">
@@ -24,23 +26,40 @@
           :key="range.id"
           :style="computeStyle(format(range.start), format(range.end))"
         >
-          <div
-            v-if="!range.moreStart"
-            class="range-items-grid-circle grid-circle-left"
-          >
-            {{ range.id }}
+          <div v-if="hoveredId === range.id" class="range-items-grid-bubble">
+            <span v-if="!range.moreStart">{{ formatTime(range.start) }}</span> ~
+            {{ formatTime(range.end) }}
           </div>
           <div
-            class="range-items-grid-line"
-            :style="{
-              marginLeft: range.moreStart ? '0px' : '7.5px',
-              marginRight: range.moreEnd ? '0px' : '7.5px',
-            }"
-          ></div>
-          <div
-            v-if="!range.moreEnd"
-            class="range-items-grid-circle grid-circle-right"
-          ></div>
+            class="range-items-grid-box"
+            @mouseover="onMouseOver(range.id)"
+            @mouseleave="onMouseLeave"
+          >
+            <div
+              v-if="!range.moreStart"
+              class="range-items-grid-circle grid-circle-left"
+              :style="{
+                backgroundColor: hoveredId === range.id ? '#5F6C7A' : 'black',
+              }"
+            >
+              <!-- {{ range.id }} -->
+            </div>
+            <div
+              class="range-items-grid-line"
+              :style="{
+                marginLeft: range.moreStart ? '0px' : '5px',
+                marginRight: range.moreEnd ? '0px' : '5px',
+                backgroundColor: hoveredId === range.id ? '#5F6C7A' : 'black',
+              }"
+            ></div>
+            <div
+              v-if="!range.moreEnd"
+              class="range-items-grid-circle grid-circle-right"
+              :style="{
+                backgroundColor: hoveredId === range.id ? '#5F6C7A' : 'black',
+              }"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
@@ -52,7 +71,7 @@ import { mapMutations, mapState } from "vuex";
 export default {
   data() {
     return {
-      // dates: new RandomDates(),
+      hoveredId: null,
     };
   },
   // created() {
@@ -105,6 +124,19 @@ export default {
         date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 3600;
       return temp;
     },
+    formatTime(date) {
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      const seconds = date.getSeconds().toString().padStart(2, "0");
+
+      return `${hours}시 ${minutes}분 ${seconds}`;
+    },
+    onMouseOver(id) {
+      this.hoveredId = id;
+    },
+    onMouseLeave() {
+      this.hoveredId = null;
+    },
     computeStyle(start, end) {
       const totalHours = 24; // 하루 24시간 기준
       const startPercentage = (start / totalHours) * 100;
@@ -136,7 +168,13 @@ export default {
 .range-background-quadrant-02 {
   height: 350px;
   flex: 1;
-  /* background-color: gray; */
+  background-color: #778899;
+}
+.range-background-quadrant-02-text {
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
 }
 .range-background-quadrant-01 {
   height: 350px;
@@ -152,20 +190,20 @@ export default {
   height: 50px;
   flex: 1;
   border-top: 1px solid black;
-  background-color: antiquewhite;
+  /* background-color: antiquewhite; */
 }
 .range-background-quadrant-04 {
   height: 50px;
   flex: 9;
   border-left: 1px solid black;
   border-top: 1px solid black;
-  background-color: coral;
+  /* background-color: coral; */
 }
 .range-background-grid {
   position: absolute;
-  top: calc(350px - 6px);
+  top: calc(350px - 4px);
   left: 10%;
-  height: 12px;
+  height: 8px;
   width: 90%;
   display: grid;
   grid-template-columns: repeat(24, 1fr);
@@ -190,7 +228,7 @@ export default {
 }
 .range-items-box {
   position: absolute;
-  background-color: rgba(0, 0, 255, 0.3);
+  /* background-color: rgba(0, 0, 255, 0.3); */
   top: 0;
   left: 10%;
   height: 350px;
@@ -208,26 +246,46 @@ export default {
   flex: 1;
   align-content: center;
 }
+.range-items-grid-bubble {
+  position: absolute;
+  top: calc(50% + 10px);
+  left: 5px;
+  height: 30px;
+  width: max-content;
+  align-content: center;
+  background-color: #fdf0df;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 0 10px;
+  z-index: 2;
+  font-size: 0.75rem;
+}
+.range-items-grid-box {
+  height: max-content;
+  padding: 10px 0;
+  /* align-content: center; */
+}
 .range-items-grid-circle {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  height: 15px;
-  width: 15px;
+  height: 10px;
+  width: 10px;
   border-radius: 50%;
-  border: 2px solid black;
   text-align: center;
   font-size: 0.5rem;
   font-weight: 700;
+  /* background-color: black; */
 }
 .grid-circle-left {
-  left: -7.5px;
+  left: -5px;
 }
 .grid-circle-right {
-  right: -7.5px;
+  right: -5px;
 }
 .range-items-grid-line {
-  height: 2px;
-  background-color: black;
+  height: 1px;
+  /* background-color: black; */
 }
 </style>

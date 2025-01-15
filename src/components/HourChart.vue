@@ -84,6 +84,6 @@ export default {
   position: relative;
   height: 400px;
   margin-top: 25px;
-  background-color: bisque;
+  background-color: #fdf0df;
 }
 </style>
