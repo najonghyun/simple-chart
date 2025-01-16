@@ -35,9 +35,12 @@ body {
   box-sizing: border-box;
   height: 100vh;
 }
+#app {
+  height: 100vh;
+  overflow-y: scroll;
+}
 .container {
-  max-width: 100%;
-  height: calc(100vh - 60px);
-  padding: 30px;
+  padding: 30px 0px;
+  align-content: center;
 }
 </style>

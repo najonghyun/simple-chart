@@ -1,7 +1,8 @@
 <template>
   <div class="range-container">
+    <!-- -->
     <div class="range-background-box">
-      <div class="range-background-quadrant-top">
+      <div class="range-background-quadrant-top" ref="box1">
         <div class="range-background-quadrant-02">
           <div class="range-background-quadrant-02-text">표본</div>
         </div>
@@ -10,15 +11,20 @@
       <div class="range-background-quadrant-bottom">
         <div class="range-background-quadrant-03"></div>
         <div class="range-background-quadrant-04"></div>
-      </div>
-      <div class="range-background-grid">
-        <div class="range-background-grid-line" v-for="n in 25" :key="n"></div>
-      </div>
-      <div class="range-background-grid-text">
-        <div v-for="n in 25" :key="n">{{ n - 1 }}</div>
+        <div class="range-background-bottom-grid">
+          <div
+            class="range-background-bottom-grid-line"
+            v-for="n in 25"
+            :key="n"
+          ></div>
+        </div>
+        <div class="range-background-bottom-grid-text">
+          <div v-for="n in 25" :key="n">{{ n - 1 }}</div>
+        </div>
       </div>
     </div>
-    <div class="range-items-box">
+    <!-- 요기 -->
+    <div class="range-items-box" ref="box2">
       <div class="range-items-grid">
         <div
           class="range-items-grid-content"
@@ -27,7 +33,8 @@
           :style="computeStyle(format(range.start), format(range.end))"
         >
           <div v-if="hoveredId === range.id" class="range-items-grid-bubble">
-            <span v-if="!range.moreStart">{{ formatTime(range.start) }}</span> ~
+            <span v-if="!range.moreStart">{{ formatTime(range.start) }}</span>
+            ~
             {{ formatTime(range.end) }}
           </div>
           <div
@@ -39,7 +46,7 @@
               v-if="!range.moreStart"
               class="range-items-grid-circle grid-circle-left"
               :style="{
-                backgroundColor: hoveredId === range.id ? '#5F6C7A' : 'black',
+                backgroundColor: hoveredId === range.id ? '#DC143C' : 'gray',
               }"
             >
               <!-- {{ range.id }} -->
@@ -49,20 +56,21 @@
               :style="{
                 marginLeft: range.moreStart ? '0px' : '5px',
                 marginRight: range.moreEnd ? '0px' : '5px',
-                backgroundColor: hoveredId === range.id ? '#5F6C7A' : 'black',
+                backgroundColor: hoveredId === range.id ? '#DC143C' : 'gray',
               }"
             ></div>
             <div
               v-if="!range.moreEnd"
               class="range-items-grid-circle grid-circle-right"
               :style="{
-                backgroundColor: hoveredId === range.id ? '#5F6C7A' : 'black',
+                backgroundColor: hoveredId === range.id ? '#DC143C' : 'gray',
               }"
             ></div>
           </div>
         </div>
       </div>
     </div>
+    <!-- 요기 -->
   </div>
 </template>
 <script>
@@ -74,48 +82,20 @@ export default {
       hoveredId: null,
     };
   },
-  // created() {
-  //   this.dates.create(5);
-  // },
   computed: {
     ...mapState({ filteredDates: "filteredDates" }),
-    // ...mapState({ number: "number", date: "date", dates: "dates" }),
-    // filteredDates() {
-    //   const targetDate = new Date(this.date);
-    //   const targetStart = new Date(targetDate);
-    //   targetStart.setHours(0, 0, 0, 0);
-
-    //   const targetEnd = new Date(targetDate);
-    //   targetEnd.setHours(23, 59, 59, 999);
-
-    //   return this.dates.items
-    //     .map((range) => {
-    //       const startDate = new Date(range.start);
-    //       const endDate = new Date(range.end);
-
-    //       // 선택된 날짜와 겹치는 범위를 확인
-    //       if (endDate < targetStart || startDate > targetEnd) {
-    //         return null;
-    //       }
-    //       const start =
-    //         startDate < targetStart
-    //           ? 0
-    //           : startDate.getHours() + startDate.getMinutes() / 60;
-    //       const end =
-    //         endDate > targetEnd
-    //           ? 24
-    //           : endDate.getHours() + endDate.getMinutes() / 60;
-
-    //       return {
-    //         id: range.id,
-    //         start: start,
-    //         end: end,
-    //         moreStart: startDate < targetStart,
-    //         moreEnd: endDate > targetEnd,
-    //       };
-    //     })
-    //     .filter((range) => range !== null); // null 값 제거
-    // },
+  },
+  watch: {
+    filteredDates() {
+      this.$nextTick(() => {
+        const box1 = this.$refs.box1;
+        const box2 = this.$refs.box2;
+        if (box1 && box2) {
+          const box2Height = box2.clientHeight;
+          box1.style.height = `${box2Height}px`;
+        }
+      });
+    },
   },
   methods: {
     ...mapMutations(["SET_FILTEREDDATES"]),
@@ -153,20 +133,20 @@ export default {
 <style>
 .range-container {
   position: relative;
-  height: 400px;
+  min-height: 400px;
+  width: 100%;
   margin-top: 25px;
 }
 .range-background-box {
   position: relative;
-  height: 400px;
-  /* background-color: aqua; */
+  min-height: 350px;
 }
 .range-background-quadrant-top {
-  height: 350px;
+  min-height: 350px;
   display: flex;
 }
 .range-background-quadrant-02 {
-  height: 350px;
+  min-height: 350px;
   flex: 1;
   background-color: #778899;
 }
@@ -177,12 +157,12 @@ export default {
   color: white;
 }
 .range-background-quadrant-01 {
-  height: 350px;
+  min-height: 350px;
   flex: 9;
   border-left: 1px solid black;
-  /* background-color: darkred; */
 }
 .range-background-quadrant-bottom {
+  position: relative;
   height: 50px;
   display: flex;
 }
@@ -190,33 +170,31 @@ export default {
   height: 50px;
   flex: 1;
   border-top: 1px solid black;
-  /* background-color: antiquewhite; */
 }
 .range-background-quadrant-04 {
   height: 50px;
   flex: 9;
   border-left: 1px solid black;
   border-top: 1px solid black;
-  /* background-color: coral; */
 }
-.range-background-grid {
+.range-background-bottom-grid {
   position: absolute;
-  top: calc(350px - 4px);
+  top: -3px;
   left: 10%;
   height: 8px;
   width: 90%;
   display: grid;
   grid-template-columns: repeat(24, 1fr);
   grid-template-rows: 1fr;
-  /* z-index: 2; */
+  z-index: 2;
 }
-.range-background-grid-line {
+.range-background-bottom-grid-line {
   border-right: 1px solid black; /* 세로선 */
   height: 100%;
 }
-.range-background-grid-text {
+.range-background-bottom-grid-text {
   position: absolute;
-  top: calc(350px + 10px);
+  top: 10px;
   left: 8%;
   height: 20px;
   width: 93.75%;
@@ -225,21 +203,22 @@ export default {
   grid-template-rows: 1fr;
   text-align: center;
   font-size: 0.75rem;
+  font-weight: 600;
 }
+
+/* items */
 .range-items-box {
   position: absolute;
-  /* background-color: rgba(0, 0, 255, 0.3); */
   top: 0;
   left: 10%;
-  height: 350px;
+  min-height: 350px;
   width: 90%;
-  z-index: 2;
+  /* z-index: 2; */
 }
 .range-items-grid {
   display: flex;
   flex-direction: column;
-  height: 350px;
-  /* justify-content: space-between; */
+  min-height: 350px;
 }
 .range-items-grid-content {
   position: relative;
@@ -264,7 +243,6 @@ export default {
 .range-items-grid-box {
   height: max-content;
   padding: 10px 0;
-  /* align-content: center; */
 }
 .range-items-grid-circle {
   position: absolute;
@@ -276,7 +254,6 @@ export default {
   text-align: center;
   font-size: 0.5rem;
   font-weight: 700;
-  /* background-color: black; */
 }
 .grid-circle-left {
   left: -5px;
@@ -285,7 +262,6 @@ export default {
   right: -5px;
 }
 .range-items-grid-line {
-  height: 1px;
-  /* background-color: black; */
+  height: 2px;
 }
 </style>

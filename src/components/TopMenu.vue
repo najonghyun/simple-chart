@@ -21,6 +21,7 @@
           type="number"
           placeholder="숫자"
           v-model="inputNumber"
+          ref="input"
         />
       </div>
       <button class="menu-check-button" type="submit">조회</button>
@@ -46,6 +47,9 @@ export default {
     this.inputDate = today;
     this.max = maxDate;
   },
+  mounted() {
+    this.$refs.input.focus();
+  },
   methods: {
     ...mapMutations(["SET_DATE", "SET_ISCHECK"]),
     ...mapActions(["ADD_DATES", "UPDATE_DATE"]),
@@ -63,6 +67,7 @@ export default {
 </script>
 <style>
 .menu-container {
+  width: 100%;
 }
 .menu-box {
   display: flex;

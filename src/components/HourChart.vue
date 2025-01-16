@@ -1,15 +1,25 @@
 <template>
   <div class="hour-chart-container">
-    <wj-flex-chart :itemsSource="data" bindingX="hour" selectionMode="Point">
+    <wj-flex-chart
+      :itemsSource="data"
+      bindingX="hour"
+      selectionMode="Point"
+      :palette="['rgba(119, 136, 153, 1)']"
+    >
       <wj-flex-chart-legend position="Top"> </wj-flex-chart-legend>
-      <wj-flex-chart-series name="count" binding="count">
+      <wj-flex-chart-series name="포함 개수" binding="count" :offset="20">
       </wj-flex-chart-series>
       <wj-flex-chart-axis
         wj-property="axisX"
-        title="Hour"
+        title="시간 별 (hour)"
         :majorUnit="1"
       ></wj-flex-chart-axis>
-      <wj-flex-chart-data-label content="{y}"></wj-flex-chart-data-label>
+      <wj-flex-chart-axis wj-property="axisY" title="포함 개수" :majorUnit="1">
+      </wj-flex-chart-axis>
+      <wj-flex-chart-data-label
+        content="{y}"
+        :offset="5"
+      ></wj-flex-chart-data-label>
       <wj-flex-chart-animation></wj-flex-chart-animation>
     </wj-flex-chart>
   </div>
@@ -71,6 +81,7 @@ export default {
       const timeInSeconds = this.convertToSeconds(currentDate);
       const result = this.calculateRange.find(
         (interval) =>
+          // 시작은 포함, 끝은 미 포함
           timeInSeconds >= interval.start && timeInSeconds < interval.end
       );
       return result ? result.count : 0;
@@ -82,6 +93,7 @@ export default {
 .hour-chart-container {
   position: relative;
   height: 400px;
+  width: 100%;
   margin-top: 25px;
   background-color: #fdf0df;
 }
