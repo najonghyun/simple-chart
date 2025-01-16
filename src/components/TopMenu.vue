@@ -78,6 +78,10 @@ export default {
   display: flex;
   align-items: center;
 }
+.menu-date-text {
+  font-family: "SejongGeulggot";
+  font-weight: 700;
+}
 .menu-date-datepicker {
   margin-left: 10px;
   width: 250px;
@@ -88,6 +92,8 @@ export default {
   align-items: center;
 }
 .menu-specimen-text {
+  font-family: "SejongGeulggot";
+  font-weight: 700;
 }
 .menu-specimen-input {
   margin-left: 10px;
@@ -108,7 +114,7 @@ export default {
   color: white;
   font-size: 1rem;
   font-weight: 600;
-  /* font-family: "SejongGeulggot"; */
+  font-family: "SejongGeulggot";
   cursor: pointer;
 }
 .menu-check-button:hover {

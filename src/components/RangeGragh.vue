@@ -153,7 +153,9 @@ export default {
 .range-background-quadrant-02-text {
   padding: 10px;
   font-size: 1rem;
-  font-weight: 600;
+  font-family: "SejongGeulggot";
+  font-weight: 700;
+  letter-spacing: 0.15em;
   color: white;
 }
 .range-background-quadrant-01 {
@@ -203,7 +205,8 @@ export default {
   grid-template-rows: 1fr;
   text-align: center;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-family: "SejongGeulggot";
+  font-weight: 700;
 }
 
 /* items */
@@ -238,6 +241,8 @@ export default {
   border-bottom-right-radius: 10px;
   padding: 0 10px;
   z-index: 2;
+  font-family: "SejongGeulggot";
+  font-weight: 700;
   font-size: 0.75rem;
 }
 .range-items-grid-box {

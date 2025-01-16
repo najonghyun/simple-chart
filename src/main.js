@@ -9,6 +9,7 @@ import { registerChart } from '@mescius/wijmo.vue2.chart'
 import { registerChartAnimation } from '@mescius/wijmo.vue2.chart.animation'
 import '@mescius/wijmo.styles/wijmo.css'
 import './assets/css/wijmo.css'
+import './assets/fonts/index.css'
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)

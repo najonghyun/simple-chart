@@ -2,9 +2,13 @@
   --bs-primary: #778899;
 }
 
+.b-form-btn-label-control.form-control {
+  height: 40px;
+  align-items: center;
+}
+
 .b-form-datepicker {
-  height: 38px;
   border-radius: 10px;
   border: gray 1px solid;
-  font-size: 1rem;
+  font-size: 0.9375rem;
 }

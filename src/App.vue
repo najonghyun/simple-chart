@@ -40,7 +40,7 @@ body {
   overflow-y: scroll;
 }
 .container {
-  padding: 30px 0px;
+  padding-top: 30px;
   align-content: center;
 }
 </style>

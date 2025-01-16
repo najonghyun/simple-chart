@@ -7,7 +7,7 @@
       :palette="['rgba(119, 136, 153, 1)']"
     >
       <wj-flex-chart-legend position="Top"> </wj-flex-chart-legend>
-      <wj-flex-chart-series name="포함 개수" binding="count" :offset="20">
+      <wj-flex-chart-series name="포함 개수" binding="count">
       </wj-flex-chart-series>
       <wj-flex-chart-axis
         wj-property="axisX"
@@ -29,12 +29,7 @@ import { mapState } from "vuex";
 
 export default {
   data() {
-    return {
-      // data: Array.from({ length: 24 }, (_, hour) => ({
-      //   hour,
-      //   count: this.queryOverlap(hour),
-      // })),
-    };
+    return {};
   },
   computed: {
     ...mapState({ filteredDates: "filteredDates", date: "date" }),
@@ -92,7 +87,7 @@ export default {
 <style>
 .hour-chart-container {
   position: relative;
-  height: 400px;
+  height: 410px;
   width: 100%;
   margin-top: 25px;
   background-color: #fdf0df;
