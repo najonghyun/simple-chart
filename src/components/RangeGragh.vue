@@ -18,9 +18,10 @@
             :key="n"
           ></div>
         </div>
-        <div class="range-background-bottom-grid-text">
+        <div class="range-background-bottom-grid-number">
           <div v-for="n in 25" :key="n">{{ n - 1 }}</div>
         </div>
+        <div class="range-background-bottom-grid-text">시간 (hour)</div>
       </div>
     </div>
     <!-- 요기 -->
@@ -194,7 +195,7 @@ export default {
   border-right: 1px solid black; /* 세로선 */
   height: 100%;
 }
-.range-background-bottom-grid-text {
+.range-background-bottom-grid-number {
   position: absolute;
   top: 10px;
   left: 8%;
@@ -204,6 +205,18 @@ export default {
   grid-template-columns: repeat(25, 1fr);
   grid-template-rows: 1fr;
   text-align: center;
+  font-size: 0.75rem;
+  font-family: "SejongGeulggot";
+  font-weight: 700;
+}
+.range-background-bottom-grid-text {
+  position: absolute;
+  top: 30px;
+  left: 10%;
+  width: 90%;
+  text-align: center;
+  color: #bebebe;
+  letter-spacing: 0.2em;
   font-size: 0.75rem;
   font-family: "SejongGeulggot";
   font-weight: 700;

@@ -55,6 +55,8 @@ export default {
     ...mapActions(["ADD_DATES", "UPDATE_DATE"]),
     onSubmit() {
       const temp = this.inputNumber;
+      if (temp < 1) return alert("0보다 큰 수로 다시 입력하세요!");
+
       this.ADD_DATES(temp);
       this.SET_ISCHECK(true);
     },
