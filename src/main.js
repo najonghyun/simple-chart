@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
+import { formatTime } from './utils/filters.js'
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -11,6 +12,7 @@ import '@mescius/wijmo.styles/wijmo.css'
 import './assets/css/wijmo.css'
 import './assets/fonts/index.css'
 
+Vue.filter('formatTime', formatTime)
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.config.productionTip = false

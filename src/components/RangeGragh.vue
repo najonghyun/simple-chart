@@ -1,6 +1,5 @@
 <template>
   <div class="range-container">
-    <!-- -->
     <div class="range-background-box">
       <div class="range-background-quadrant-top" ref="box1">
         <div class="range-background-quadrant-02">
@@ -24,19 +23,20 @@
         <div class="range-background-bottom-grid-text">시간 (hour)</div>
       </div>
     </div>
-    <!-- 요기 -->
     <div class="range-items-box" ref="box2">
       <div class="range-items-grid">
         <div
           class="range-items-grid-content"
           v-for="range in filteredDates"
           :key="range.id"
-          :style="computeStyle(format(range.start), format(range.end))"
+          :style="
+            computeStyle(convertToHours(range.start), convertToHours(range.end))
+          "
         >
           <div v-if="hoveredId === range.id" class="range-items-grid-bubble">
-            <span v-if="!range.moreStart">{{ formatTime(range.start) }}</span>
+            <span v-if="!range.moreStart">{{ range.start | formatTime }}</span>
             ~
-            {{ formatTime(range.end) }}
+            {{ range.end | formatTime }}
           </div>
           <div
             class="range-items-grid-box"
@@ -71,11 +71,11 @@
         </div>
       </div>
     </div>
-    <!-- 요기 -->
   </div>
 </template>
 <script>
 import { mapMutations, mapState } from "vuex";
+import { convertToHours } from "@/utils/filters";
 
 export default {
   data() {
@@ -87,6 +87,7 @@ export default {
     ...mapState({ filteredDates: "filteredDates" }),
   },
   watch: {
+    // refs를 통해 dom에 접근하여 표본의 수가 매우 많아지면 그 커지는 높이에 맞게 height을 동적으로 변경
     filteredDates() {
       this.$nextTick(() => {
         const box1 = this.$refs.box1;
@@ -100,32 +101,21 @@ export default {
   },
   methods: {
     ...mapMutations(["SET_FILTEREDDATES"]),
-    format(date) {
-      const temp =
-        date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 3600;
-      return temp;
-    },
-    formatTime(date) {
-      const hours = date.getHours().toString().padStart(2, "0");
-      const minutes = date.getMinutes().toString().padStart(2, "0");
-      const seconds = date.getSeconds().toString().padStart(2, "0");
-
-      return `${hours}시 ${minutes}분 ${seconds}`;
-    },
+    convertToHours,
     onMouseOver(id) {
       this.hoveredId = id;
     },
     onMouseLeave() {
       this.hoveredId = null;
     },
+    // absolute로 설정된 box화면을 24개의 열로 나누고, 표본을 해당 위치에 맞게 출력
     computeStyle(start, end) {
-      const totalHours = 24; // 하루 24시간 기준
+      const totalHours = 24;
       const startPercentage = (start / totalHours) * 100;
       const endPercentage = (end / totalHours) * 100;
       return {
-        left: `${startPercentage}%`, // 시작 위치
-        width: `${endPercentage - startPercentage}%`, // 길이
-        // backgroundColor: "rgba(0, 0, 255, 0.3)", // 그래프 색상
+        left: `${startPercentage}%`,
+        width: `${endPercentage - startPercentage}%`,
       };
     },
   },

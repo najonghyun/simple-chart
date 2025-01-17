@@ -1,23 +1,17 @@
+import { formatDate } from './filters'
+
+// getRandomDate(startDate, endDate): startDate와 endDate 사이의 랜덤 날짜 생성
+function getRandomDate(startDate, endDate) {
+  const start = new Date(startDate).getTime()
+  const end = new Date(endDate).getTime()
+  const randomTime = new Date(start + Math.random() * (end - start))
+  return randomTime
+}
+
+// RandomDates : 현재 날짜 기준 최근 3개월의 랜덤 범위 날짜를 관리하는 클래스
 class RandomDates {
   constructor() {
     this.items = []
-  }
-  // formatDate(date): Date 객체를 "YYYY-MM-DD HH:mm:ss" 형식으로 변환
-  formatDate(date) {
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    const hours = String(date.getHours()).padStart(2, '0')
-    const minutes = String(date.getMinutes()).padStart(2, '0')
-    const seconds = String(date.getSeconds()).padStart(2, '0')
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-  }
-  // getRandomDate(startDate, endDate): startDate와 endDate 사이의 랜덤 날짜 생성
-  getRandomDate(startDate, endDate) {
-    const start = new Date(startDate).getTime()
-    const end = new Date(endDate).getTime()
-    const randomTime = new Date(start + Math.random() * (end - start))
-    return randomTime
   }
   create(size) {
     const now = new Date()
@@ -26,16 +20,16 @@ class RandomDates {
     oneWeekAgo.setDate(today.getDate() - 3)
 
     for (let i = 0; i < size; i++) {
-      const randomStart = this.getRandomDate(oneWeekAgo, today)
+      const randomStart = getRandomDate(oneWeekAgo, today)
       const minEnd = new Date(randomStart)
       minEnd.setHours(minEnd.getHours() + 1)
       const maxEnd = new Date(randomStart)
       maxEnd.setHours(maxEnd.getHours() + 24)
-      const randomEnd = this.getRandomDate(minEnd, Math.min(maxEnd, today))
+      const randomEnd = getRandomDate(minEnd, Math.min(maxEnd, today))
       this.items.push({
         id: i + 1,
-        start: this.formatDate(randomStart),
-        end: this.formatDate(randomEnd),
+        start: formatDate(randomStart),
+        end: formatDate(randomEnd),
       })
     }
     console.log(this.items)

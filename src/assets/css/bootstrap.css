@@ -1,7 +1,4 @@
-:root {
-  --bs-primary: #778899;
-}
-
+/* DatePicker */
 .b-form-btn-label-control.form-control {
   height: 40px;
   align-items: center;

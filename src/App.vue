@@ -3,7 +3,7 @@
     <div class="container">
       <TopMenu />
       <RangeGragh />
-      <HourChart v-if="isCheck" />
+      <HourChart v-if="isCheckSubmit" />
     </div>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
     HourChart,
   },
   computed: {
-    ...mapState({ isCheck: "isCheck" }),
+    ...mapState({ isCheckSubmit: "isCheckSubmit" }),
   },
 };
 </script>

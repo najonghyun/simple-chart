@@ -50,7 +50,7 @@ export default {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const maxDate = new Date(today);
-    this.SET_DATE(today);
+    this.SET_SELECTEDDATE(today);
     this.inputDate = today;
     this.max = maxDate;
   },
@@ -58,7 +58,7 @@ export default {
     this.$refs.input.focus();
   },
   methods: {
-    ...mapMutations(["SET_DATE", "SET_ISCHECK"]),
+    ...mapMutations(["SET_SELECTEDDATE", "SET_ISCHECKSUBMIT"]),
     ...mapActions(["ADD_DATES", "UPDATE_DATE"]),
     onMouseOver() {
       this.isQa = true;
@@ -69,9 +69,8 @@ export default {
     onSubmit() {
       const temp = this.inputNumber;
       if (temp < 1) return alert("0보다 큰 수로 다시 입력하세요!");
-
       this.ADD_DATES(temp);
-      this.SET_ISCHECK(true);
+      this.SET_ISCHECKSUBMIT(true);
     },
     onChangeDate() {
       this.UPDATE_DATE(this.inputDate);
