@@ -1,6 +1,10 @@
 <template>
   <div class="menu-container">
+    <QaBox v-if="isQa" />
     <form class="menu-box" @submit.prevent="onSubmit">
+      <div class="menu-qa" @mouseover="onMouseOver" @mouseleave="onMouseLeave">
+        <b-icon :icon="isQa ? 'info-circle-fill' : 'info-circle'"></b-icon>
+      </div>
       <div class="menu-date">
         <div class="menu-date-text">날짜</div>
         <div class="menu-date-datepicker">
@@ -29,11 +33,14 @@
   </div>
 </template>
 <script>
+import QaBox from "./QaBox.vue";
 import { mapActions, mapMutations } from "vuex";
 
 export default {
+  components: { QaBox },
   data() {
     return {
+      isQa: false,
       inputDate: "",
       max: "",
       inputNumber: "",
@@ -53,6 +60,12 @@ export default {
   methods: {
     ...mapMutations(["SET_DATE", "SET_ISCHECK"]),
     ...mapActions(["ADD_DATES", "UPDATE_DATE"]),
+    onMouseOver() {
+      this.isQa = true;
+    },
+    onMouseLeave() {
+      this.isQa = false;
+    },
     onSubmit() {
       const temp = this.inputNumber;
       if (temp < 1) return alert("0보다 큰 수로 다시 입력하세요!");
@@ -72,9 +85,14 @@ export default {
   width: 100%;
 }
 .menu-box {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.menu-qa {
+  position: absolute;
+  left: -25px;
 }
 .menu-date {
   display: flex;
