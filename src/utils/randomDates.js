@@ -16,16 +16,16 @@ class RandomDates {
   create(size) {
     const now = new Date()
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
-    const oneWeekAgo = new Date(today)
-    oneWeekAgo.setDate(today.getDate() - 3)
+    const ago = new Date(today)
+    ago.setDate(today.getDate() - 3)
 
     for (let i = 0; i < size; i++) {
-      const randomStart = getRandomDate(oneWeekAgo, today)
+      const randomStart = getRandomDate(ago, today)
       const minEnd = new Date(randomStart)
       minEnd.setHours(minEnd.getHours() + 1)
       const maxEnd = new Date(randomStart)
       maxEnd.setHours(maxEnd.getHours() + 24)
-      const randomEnd = getRandomDate(minEnd, Math.min(maxEnd, today))
+      const randomEnd = getRandomDate(Math.min(minEnd, today), Math.min(maxEnd, today))
       this.items.push({
         id: i + 1,
         start: formatDate(randomStart),

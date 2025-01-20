@@ -36,7 +36,7 @@
           <div v-if="hoveredId === range.id" class="range-items-grid-bubble">
             <span v-if="!range.moreStart">{{ range.start | formatTime }}</span>
             ~
-            {{ range.end | formatTime }}
+            <span v-if="!range.moreEnd">{{ range.end | formatTime }}</span>
           </div>
           <div
             class="range-items-grid-box"
