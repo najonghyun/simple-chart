@@ -32,7 +32,7 @@ class RandomDates {
         end: formatDate(randomEnd),
       })
     }
-    console.log(this.items)
+    // console.log(this.items)
   }
   clear() {
     this.items = []
