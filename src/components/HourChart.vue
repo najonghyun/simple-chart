@@ -37,13 +37,23 @@ export default {
       filteredDates: "filteredDates",
       selectedDate: "selectedDate",
     }),
+    // chartData() 시간 별로 최대 사용량 계산하는 변수
     chartData() {
-      return Array.from({ length: 24 }, (_, hour) => ({
-        hour,
-        count: this.rangeCheck(hour),
-      }));
+      // 1. // 각 시간대의 count 초기화
+      const resultHours = Array(24).fill(0);
+
+      // 2. 범위를 순회하며 시간을 추출해 그 안에서의 max값을 반영
+      this.calculateRange.forEach((range) => {
+        const startHour = Math.floor(range.start / 3600);
+        const endHour = Math.ceil(range.end / 3600);
+
+        for (let hour = startHour; hour < endHour; hour++) {
+          resultHours[hour] = Math.max(resultHours[hour], range.count);
+        }
+      });
+      return resultHours.map((count, hour) => ({ hour, count }));
     },
-    // calculateRange() : 범위별로 표본이 겹치는 수를 계산하는 함수
+    // calculateRange() : 범위별로 표본이 겹치는 수를 계산하는 변수
     calculateRange() {
       const events = [];
       // 1. filteredDate를 각 초로 변환 (이 때 시작 지점(start)에서는 포함을 시작하므로 +1을 더하고, 끝 지점(end)에서는 포함되지 않으므로 -1을 뺌)
@@ -71,16 +81,29 @@ export default {
   },
   methods: {
     // rangeCheck(hour) : caculateRange[]배열에 저장된 범위 중 특정 시간(hour)에 해당하는 범위의 count 값을 계산하는 함수
-    rangeCheck(hour) {
+    rangeCheck() {
       const currentDate = new Date(this.selectedDate);
+      let hour = 0;
       currentDate.setHours(hour, 0, 0, 0);
+      let timeInSeconds = convertToSeconds(currentDate);
 
-      const timeInSeconds = convertToSeconds(currentDate);
-      // 시작은 포함, 끝은 미 포함
-      const result = this.calculateRange.find(
-        (time) => timeInSeconds >= time.start && timeInSeconds < time.end
-      );
-      return result ? result.count : 0;
+      let maxCount = 0;
+      this.calculateRange.forEach((range) => {
+        if (timeInSeconds < range.start) {
+          this.chartData.push({ hour: hour, count: maxCount });
+          hour++;
+          currentDate.setHours(hour, 0, 0, 0);
+          timeInSeconds = convertToSeconds(currentDate);
+          maxCount = 0;
+        }
+        maxCount = Math.max(maxCount, range.count);
+      });
+
+      //   // 시작은 포함, 끝은 미 포함
+      //   const result = this.calculateRange.find(
+      //     (time) => timeInSeconds >= time.start && timeInSeconds < time.end
+      //   );
+      //   return result ? result.count : 0;
     },
   },
 };
