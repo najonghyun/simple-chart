@@ -6,9 +6,22 @@
           <div class="range-background-quadrant-02-text">표본</div>
         </div>
         <div class="range-background-quadrant-01"></div>
+        <div v-if="redLineActive" class="range-background-top-grid">
+          <div
+            class="range-background-top-grid-line"
+            v-for="n in 25"
+            :key="n"
+          ></div>
+        </div>
       </div>
       <div class="range-background-quadrant-bottom">
-        <div class="range-background-quadrant-03"></div>
+        <div class="range-background-quadrant-03">
+          <RedDashedButton
+            :text="redLineActive ? 'on' : 'off'"
+            :active="redLineActive"
+            :onClickButton="handleRedLineButton"
+          />
+        </div>
         <div class="range-background-quadrant-04"></div>
         <div class="range-background-bottom-grid">
           <div
@@ -74,13 +87,18 @@
   </div>
 </template>
 <script>
+import RedDashedButton from "./RedDashedButton.vue";
 import { mapMutations, mapState } from "vuex";
 import { convertToHours } from "@/utils/filters";
 
 export default {
+  components: {
+    RedDashedButton,
+  },
   data() {
     return {
       hoveredId: null,
+      redLineActive: false,
     };
   },
   computed: {
@@ -102,6 +120,9 @@ export default {
   methods: {
     ...mapMutations(["SET_FILTEREDDATES"]),
     convertToHours,
+    handleRedLineButton() {
+      this.redLineActive = !this.redLineActive;
+    },
     onMouseOver(id) {
       this.hoveredId = id;
     },
@@ -154,6 +175,21 @@ export default {
   flex: 9;
   border-left: 1px solid black;
 }
+.range-background-top-grid {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  height: 100%;
+  width: 90%;
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  grid-template-rows: 1fr;
+  z-index: 2;
+}
+.range-background-top-grid-line {
+  border-right: 1px dashed red; /* 세로선 */
+  /* height: 100%; */
+}
 .range-background-quadrant-bottom {
   position: relative;
   height: 50px;
@@ -163,6 +199,7 @@ export default {
   height: 50px;
   flex: 1;
   border-top: 1px solid black;
+  align-content: end;
 }
 .range-background-quadrant-04 {
   height: 50px;

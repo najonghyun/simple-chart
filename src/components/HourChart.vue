@@ -37,7 +37,7 @@ export default {
       filteredDates: "filteredDates",
       selectedDate: "selectedDate",
     }),
-    // chartData() 시간 별로 최대 사용량 계산하는 변수
+    // chartData() : 시간 별로 최대 사용량 계산하는 변수
     chartData() {
       // 1. // 각 시간대의 count 초기화
       const resultHours = Array(24).fill(0);
@@ -79,33 +79,7 @@ export default {
       return range;
     },
   },
-  methods: {
-    // rangeCheck(hour) : caculateRange[]배열에 저장된 범위 중 특정 시간(hour)에 해당하는 범위의 count 값을 계산하는 함수
-    rangeCheck() {
-      const currentDate = new Date(this.selectedDate);
-      let hour = 0;
-      currentDate.setHours(hour, 0, 0, 0);
-      let timeInSeconds = convertToSeconds(currentDate);
-
-      let maxCount = 0;
-      this.calculateRange.forEach((range) => {
-        if (timeInSeconds < range.start) {
-          this.chartData.push({ hour: hour, count: maxCount });
-          hour++;
-          currentDate.setHours(hour, 0, 0, 0);
-          timeInSeconds = convertToSeconds(currentDate);
-          maxCount = 0;
-        }
-        maxCount = Math.max(maxCount, range.count);
-      });
-
-      //   // 시작은 포함, 끝은 미 포함
-      //   const result = this.calculateRange.find(
-      //     (time) => timeInSeconds >= time.start && timeInSeconds < time.end
-      //   );
-      //   return result ? result.count : 0;
-    },
-  },
+  methods: {},
 };
 </script>
 <style>
