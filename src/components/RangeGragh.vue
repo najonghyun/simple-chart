@@ -256,7 +256,7 @@ export default {
   left: 10%;
   min-height: 350px;
   width: 90%;
-  /* z-index: 2; */
+  z-index: 2;
 }
 .range-items-grid {
   display: flex;
