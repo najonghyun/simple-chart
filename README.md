@@ -29,7 +29,6 @@
 <img src="https://github.com/user-attachments/assets/518d1f22-0224-46af-9d41-a7a2785216f6" width="70%" height="70%">
 
 <br>
-<br>
 
 ---
 
